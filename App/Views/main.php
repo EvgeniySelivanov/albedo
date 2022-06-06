@@ -9,7 +9,7 @@
     </div>
     <p class="mt-3 text-center fw-bold">To participate in the conference, please fill out the form</p>
 
-    <form class="bg-dark text-success mt-3 p-5" id="regForm" action="/index.php">
+    <form class="bg-dark text-success mt-3 p-5 rounded-5" id="regForm" action="/store-participatn" method="POST" enctype="multipart/form-data">
         <!-- One "tab" for each step in the form: -->
 
         <!--step one-->
@@ -49,7 +49,7 @@
             </div>
             <div class="mb-3">
                 <label for="email" class="form-label">Email address</label>
-                <input type="email" class="form-control required" id="email"  aria-describedby="emailHelp" oninput="this.className = ''" >
+                <input type="email" class="form-control required" id="email" name="email" aria-describedby="emailHelp" oninput="this.className = ''" >
                 <div id="emailHelp" class="form-text">We'll never share your email with anyone else.</div>
             </div>
         </div>
@@ -71,7 +71,7 @@
             </div>
             <div class="mb-3">
                 <label for="photo" class="form-label">Your photo</label>
-                <input type="file" class="form-control" id="myFile" name="filename" oninput="this.className = ''">
+                <input type="file" class="form-control"  id="fileId" name="filename"  oninput="this.className = ''">
             </div>
 
         </div>
@@ -81,8 +81,6 @@
             <div style="float:right;">
                 <button type="button" class="btn btn-primary m-2" id="prevBtn" onclick="nextPrev(-1)">Previous</button>
                 <button type="button" class="btn btn-primary m-2" id="nextBtn"  onclick="nextPrev(1)">Next</button>
-              <!-- <button type="button" id="clearStorage" name="clear">Clear form</button> -->
-
             </div>
         </div>
         <!-- Circles which indicates the steps of the form: -->

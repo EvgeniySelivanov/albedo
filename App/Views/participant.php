@@ -2,30 +2,38 @@
     <table class="table">
       <thead>
         <tr>
-          <th scope="col">#</th>
-          <th scope="col">First</th>
-          <th scope="col">Last</th>
-          <th scope="col">Handle</th>
+          <th scope="col">Field</th>
+          <th scope="col">Description</th>
         </tr>
       </thead>
       <tbody>
+     
+
+    <?php foreach($participants as $participant):
+      if($participant->filename)
+       {$src='small_'.$participant->filename;}
+       else
+       {$src='template/photo.jpg';}?>
         <tr>
-          <th scope="row">1</th>
-          <td>Mark</td>
-          <td>Otto</td>
-          <td>@mdo</td>
+          <th scope="row">Photo</th>
+          <td colspan="2"><img src="upload/<?php echo $src?>" alt="hello"></td>
+          
         </tr>
         <tr>
-          <th scope="row">2</th>
-          <td>Jacob</td>
-          <td>Thornton</td>
-          <td>@fat</td>
+          <th scope="row">Full name</th>
+          <td><?=$participant->fname.' '.$participant->lname?></td>
+         
         </tr>
         <tr>
-          <th scope="row">3</th>
-          <td colspan="2">Larry the Bird</td>
-          <td>@twitter</td>
+          <th scope="row">Report subject</th>
+          <td colspan="2"><?=$participant->reportSubject?></td>
+          
         </tr>
+        <tr>
+          <th scope="row">Email</th>
+          <td colspan="2"><?=$participant->email?></td>
+        </tr>
+        <?php endforeach?> 
       </tbody>
     </table>
 </div>

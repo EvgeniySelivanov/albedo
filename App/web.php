@@ -1,5 +1,6 @@
 <?php
 return [
     '/'=>['index','MainController'],
-    'participants'=>['participant','ParticipantController'],
+    'participants'=>['index','ParticipantController'],
+    'store-participatn'=>['store','ParticipantController'],
 ];
