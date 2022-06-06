@@ -31,7 +31,7 @@
         </tr>
         <tr>
           <th scope="row">Email</th>
-          <td colspan="2"><?=$participant->email?></td>
+          <td colspan="2"><a href="mailto:<?=$participant->email?>"><?=$participant->email?></a></td>
         </tr>
         <?php endforeach?> 
       </tbody>

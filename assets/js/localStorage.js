@@ -1,11 +1,6 @@
 const form = document.getElementById("regForm");
 const formFields = form.elements;
-/* const clearBtn=form.querySelector('[name="clear"]'); */
-/* clearBtn.addEventListener('click',clearStorage); */
 
-/* function clearStorage(){
-    localStorage.clear();
-} */
 function changeHandler() {
   localStorage.setItem(this.name, this.value);
   console.log(this.name, this.value);

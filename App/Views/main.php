@@ -1,3 +1,8 @@
+<?php require_once 'App/Helpers/Messages.php';
+session_start();
+showMessage();
+
+?>
 <div class="container">
     <div class="mt-3">
 
@@ -42,6 +47,7 @@
                 <label for="phone" class="form-label">Enter your phone number:</label>
                 <input type="tel" class="form-control required" id="phone" name="phone" pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}" oninput="this.className = ''"
                     >
+                    <small>Format: 123-456-7890</small>
             </div>
             <div class="mb-3">
                 <label for="reportSubject" class="form-label">Report subject</label>
@@ -49,8 +55,9 @@
             </div>
             <div class="mb-3">
                 <label for="email" class="form-label">Email address</label>
-                <input type="email" class="form-control required" id="email" name="email" aria-describedby="emailHelp" oninput="this.className = ''" >
-                <div id="emailHelp" class="form-text">We'll never share your email with anyone else.</div>
+                <input type="email" class="form-control required" id="email" name="email" aria-describedby="emailHelp"  pattern="[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{1,63}$" oninput="this.className = ''" >
+                <!-- <div id="emailHelp" class="form-text">We'll never share your email with anyone else.</div> -->
+                <small>Format: string@mail.com</small>
             </div>
         </div>
         <!--step two-->

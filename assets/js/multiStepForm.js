@@ -22,7 +22,8 @@ function showTab(n) {
 }
 
 function nextPrev(n) {
-  // This function will figure out which tab to display
+
+ // This function will figure out which tab to display
   var x = document.getElementsByClassName("tab");
   // Exit the function if any field in the current tab is invalid:
   if (n == 1 && !validateForm()) return false;
@@ -33,17 +34,27 @@ function nextPrev(n) {
   // if you have reached the end of the form...
   if (currentTab >= x.length) {
     // ... the form gets submitted:
+
+ 
+
+
     document.getElementById("regForm").submit();
     localStorage.clear();
     return false;
   }
   // Otherwise, display the correct tab:
   showTab(currentTab);
+ 
 }
 
 function validateForm() {
+/*   emailAddress=document.querySelector('input[email]');
+  var pattern = new RegExp(/^(("[\w-\s]+")|([\w-]+(?:\.[\w-]+)*)|("[\w-\s]+")([\w-]+(?:\.[\w-]+)*))(@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$)|(@\[?((25[0-5]\.|2[0-4][0-9]\.|1[0-9]{2}\.|[0-9]{1,2}\.))((25[0-5]|2[0-4][0-9]|1[0-9]{2}|[0-9]{1,2})\.){2}(25[0-5]|2[0-4][0-9]|1[0-9]{2}|[0-9]{1,2})\]?$)/i);
+  var check=pattern.test(emailAddress.value); */
+
   // This function deals with validation of the form fields
   var x, y, i, valid = true;
+
   x = document.getElementsByClassName("tab");
 
   y = x[currentTab].getElementsByClassName("required");
@@ -57,10 +68,16 @@ function validateForm() {
       valid = false;
     }
   }
+
   // If the valid status is true, mark the step as finished and valid:
   if (valid) {
     document.getElementsByClassName("step")[currentTab].className += " finish";
   }
+
+  
+
+
+
   return valid; // return the valid status
 }
 
