@@ -67,7 +67,10 @@ class ParticipantController extends Controller
         $email = $_POST['email'];
         echo Participant::findBy('email', $email) ? true : false;
     }
-    function show($id){
+    
+   /*  function show($id){
+       $participant=Participant::find($id);
+       View::render('main', compact('participant'));
         echo $id;
-    }
+    } */
 }

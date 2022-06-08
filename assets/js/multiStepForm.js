@@ -1,4 +1,9 @@
-var currentTab = 0; // Current tab is set to be the first tab (0)
+if(localStorage.getItem('currentTab')){
+var  currentTab=Number(localStorage.getItem('currentTab'));
+}  
+else{var currentTab = 0;}
+
+
 showTab(currentTab); // Display the current tab
 
 function showTab(n) {
@@ -23,15 +28,18 @@ function nextPrev(btn, n) {
   var x = document.getElementsByClassName("tab");
 
   if (n == 1 && !validateForm()) return false;
-   localStorage.setItem('currentTab', n);
-  /*currentTab=localStorage.getItem('currentTab');
-  console.log(currentTab) */
-
   x[currentTab].style.display = "none";
+
+/**Удалить сведения о номере формы и запистать номер формы +1 */
+  localStorage.removeItem('currentTab');
+  localStorage.setItem('currentTab',currentTab+Number(n));
+
+  currentTab = Number(localStorage.getItem('currentTab'));
+  console.log(`x.lenght=${x.length}` );
+   if (currentTab >= Number(x.length)-1) {
  
-currentTab = currentTab + n;
-  if (currentTab >= x.length) {
     localStorage.clear();
+    localStorage.setItem('currentTab',currentTab-1);
     return false;
   }
 

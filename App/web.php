@@ -7,6 +7,7 @@ return [
     'store-participant-step-2' => ['storeStep2', 'ParticipantController'],
     'isset-participant' => ['issetParticipant', 'ParticipantController'],
     'participant/(\d+)'=>['show','ParticipantController'],
+    
     'test'=>['index','CountryController'],
 
     ];

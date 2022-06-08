@@ -1,5 +1,4 @@
 const form = document.getElementById("regFormPart1");
-
 const formFields = form.elements;
 
 
@@ -20,23 +19,24 @@ function attachEvents() {
 }
 
 checkStorage();
+
 /*----------------------------------------------------------------------------*/ 
- const form2 = document.getElementById("regFormPart2"); 
- const formFields2 = form2.elements; 
- function changeHandler2() {
+const formTwo = document.getElementById("regFormPart2"); 
+const formFieldsTwo = formTwo.elements;
+ function changeHandlerTwo() {
   localStorage.setItem(this.name, this.value);
-  console.log(this.name, this.value);
+
 }
-function checkStorage2() {
-  for (let i = 0; i < formFields2.length; i++) {
-    formFields2[i].value = localStorage.getItem(formFields2[i].name);
+function checkStorageTwo() {
+  for (let i = 0; i < formFieldsTwo.length; i++) {
+    formFieldsTwo[i].value = localStorage.getItem(formFieldsTwo[i].name);
   }
-  attachEvents2();
+  attachEventsTwo();
 }
-function attachEvents2() {
-  for (let i = 0; i < formFields2.length; i++) {
-    formFields2[i].addEventListener("change", changeHandler2);
+function attachEventsTwo() {
+  for (let i = 0; i < formFieldsTwo.length; i++) {
+    formFieldsTwo[i].addEventListener("change", changeHandlerTwo);
   }
 }
 
-checkStorage2(); 
+checkStorageTwo();  
