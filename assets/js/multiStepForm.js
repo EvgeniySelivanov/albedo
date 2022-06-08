@@ -2,11 +2,9 @@ var currentTab = 0; // Current tab is set to be the first tab (0)
 showTab(currentTab); // Display the current tab
 
 function showTab(n) {
-  // This function will display the specified tab of the form...
   var x = document.getElementsByClassName("tab");
 
   x[n].style.display = "block";
-  //... and fix the Previous/Next buttons:
   if (n == 0) {
     document.getElementById("prevBtn").style.display = "none";
   } else {
@@ -17,40 +15,49 @@ function showTab(n) {
   } else {
     document.getElementById("nextBtn").innerHTML = "Next";
   }
-  //... and run a function that will display the correct step indicator:
-  fixStepIndicator(n)
+  fixStepIndicator(n);
 }
 
-function nextPrev(n) {
+function nextPrev(btn, n) {
 
- // This function will figure out which tab to display
   var x = document.getElementsByClassName("tab");
-  // Exit the function if any field in the current tab is invalid:
+
   if (n == 1 && !validateForm()) return false;
-  // Hide the current tab:
+   localStorage.setItem('currentTab', n);
+  /*currentTab=localStorage.getItem('currentTab');
+  console.log(currentTab) */
+
   x[currentTab].style.display = "none";
-  // Increase or decrease the current tab by 1:
-  currentTab = currentTab + n;
-  // if you have reached the end of the form...
-  if (currentTab >= x.length) {
-    // ... the form gets submitted:
-
  
-
-
-    document.getElementById("regForm").submit();
+currentTab = currentTab + n;
+  if (currentTab >= x.length) {
     localStorage.clear();
     return false;
   }
-  // Otherwise, display the correct tab:
-  showTab(currentTab);
- 
+
+
+  fetch(btn.closest('form').action, {
+    method: 'POST',
+    body: new FormData(btn.closest('form'))
+  })
+    .then(response => response.text())
+    .then(data => {
+      if (data) {
+        document.getElementById('id').value = data;
+        document.getElementById('share_tw').href = document.getElementById('share_tw').href + data;
+        document.getElementById('share_fb').href = document.getElementById('share_fb').href + data;
+
+      }
+      showTab(currentTab);
+    });
+    
+
 }
 
 function validateForm() {
-/*   emailAddress=document.querySelector('input[email]');
+  emailAddress = document.getElementById('email');
   var pattern = new RegExp(/^(("[\w-\s]+")|([\w-]+(?:\.[\w-]+)*)|("[\w-\s]+")([\w-]+(?:\.[\w-]+)*))(@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$)|(@\[?((25[0-5]\.|2[0-4][0-9]\.|1[0-9]{2}\.|[0-9]{1,2}\.))((25[0-5]|2[0-4][0-9]|1[0-9]{2}|[0-9]{1,2})\.){2}(25[0-5]|2[0-4][0-9]|1[0-9]{2}|[0-9]{1,2})\]?$)/i);
-  var check=pattern.test(emailAddress.value); */
+  var check = pattern.test(emailAddress.value);
 
   // This function deals with validation of the form fields
   var x, y, i, valid = true;
@@ -58,28 +65,22 @@ function validateForm() {
   x = document.getElementsByClassName("tab");
 
   y = x[currentTab].getElementsByClassName("required");
-  // A loop that checks every input field in the current tab:
+
   for (i = 0; i < y.length; i++) {
-    // If a field is empty...
     if (y[i].value == "") {
-      // add an "invalid" class to the field:
       y[i].className += " invalid";
-      // and set the current valid status to false
       valid = false;
     }
   }
-
-  // If the valid status is true, mark the step as finished and valid:
   if (valid) {
     document.getElementsByClassName("step")[currentTab].className += " finish";
   }
 
-  
-
-
 
   return valid; // return the valid status
 }
+
+
 
 function fixStepIndicator(n) {
   // This function removes the "active" class of all steps...
@@ -90,3 +91,20 @@ function fixStepIndicator(n) {
   //... and adds the "active" class on the current step:
   x[n].className += " active";
 }
+
+
+
+let emailParticipant = document.getElementById('email');
+
+emailParticipant.addEventListener('blur', (e) => {
+  const formData = new FormData();
+  formData.append('email', emailParticipant.value);
+  fetch('/isset-participant', {
+    method: 'POST',
+    body: formData
+  })
+    .then(response => response.text())
+    .then(data => {
+      // alert(data)
+    });
+})

@@ -52,3 +52,16 @@ body{
   .step.finish {
     background-color: #04AA6D;
   }
+
+ svg{
+   color: #e84b4b;
+ }
+ #share{
+font-size: 30px;
+font-weight: 900;
+ }
+ .share{
+   background-color: bisque;
+   width:max-content;
+   padding: 15px;
+ }

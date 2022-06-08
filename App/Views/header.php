@@ -40,8 +40,11 @@
         </li>
         <li class="nav-item">
           <a class="nav-link" href="participants">Participants</a>
+          
         </li>
-        
+        <li class="nav-item">
+          <a class="nav-link" href="test">test</a>
+        </li>
       </ul>
     </div>
   </div>

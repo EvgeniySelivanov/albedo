@@ -2,10 +2,17 @@
 namespace App\Controllers;
 use App\Helpers\View;
 
+
+
+
 class MainController{
+
+
     public function index()
     {
-       View::render('main');
+       /*  $countries = Country::all(); */
+        
+        View::render('main');
     }
    
 }
