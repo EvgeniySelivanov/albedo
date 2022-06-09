@@ -75,7 +75,7 @@
             </div>
             <div class="mb-3">
                 <label for="about">About me:</label>
-                <textarea id="about" name="about" rows="10" cols="105">
+                <textarea class="mb-3" id="about" name="about" rows="10" cols="105">
 
                 </textarea>
             </div>
