@@ -1,5 +1,5 @@
 <?php
-require_once 'App/Helpers/Messages.php';
+
 function uploadImage()
 {
     $file = $_FILES['filename'];
@@ -12,14 +12,11 @@ function uploadImage()
     $path = '/';
     $accessType = ['image/jpeg', 'image/png', 'image/gif', 'image/webp'];
     if (!in_array($type, $accessType)) {         //проверяет совпадет ли тип картинки со значениями в массиве $accessType
-        setMessage('File is not image!!!');
-        header('Location: ' . $path);
-        die(); 
+        echo json_encode(['error' => 'Check type!']);
+        die();
     }
     if ($size > 50 * 1024 * 1024) {     //ограничили размер в 50 мегабайт
-        setMessage('Size is over!!!');
-
-        header('Location: ' . $path);
+        echo json_encode(['error' => 'Check size']);
         die();
     }
 

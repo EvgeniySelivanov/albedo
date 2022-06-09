@@ -3,9 +3,9 @@
 namespace App\Controllers;
 
 
-require_once 'App/Helpers/Messages.php';
-require_once 'App/Helpers/uploadImage.php';
 
+require_once 'App/Helpers/uploadImage.php';
+/* require_once 'App/Helpers/validateMail.php'; */
 
 
 use App\Helpers\View;
@@ -22,7 +22,7 @@ class ParticipantController extends Controller
     }
 
 
-    public function storeStep1()
+    public function store()
     {
         $fname = $_POST['fname'];
         $lname = $_POST['lname'];
@@ -31,8 +31,19 @@ class ParticipantController extends Controller
         $phone = $_POST['phone'];
         $reportSubject = $_POST['reportSubject'];
         $email = $_POST['email'];
+        $company = $_POST['company'] ?? null;
+        $position = $_POST['position'] ?? null;
+        $about = $_POST['about'] ?? null;
+        $filename = $_FILES['filename']['error'] != 4 ? uploadImage() : null;
 
-        $participant = new Participant();
+        $id = $_POST['id'];
+
+        if (!$id && $this->issetParticipant($email)) {
+            echo json_encode(['error' => 'User Exists']);
+            die();
+        }
+
+        $participant = $id ? Participant::find($id) : new Participant();
         $participant->fname = $fname;
         $participant->lname = $lname;
         $participant->birhtday = $birhtday;
@@ -41,36 +52,27 @@ class ParticipantController extends Controller
         $participant->reportSubject = $reportSubject;
         $participant->email = $email;
 
-        $participant->save();
-        $newParticipant = Participant::findBy('email', $email);
-        echo  $newParticipant ? $newParticipant->id : null;
-    }
 
-    public function storeStep2()
-    {
-        $company = $_POST['company'] ?? null;
-        $position = $_POST['position'] ?? null;
-        $about = $_POST['about'] ?? null;
-        $filename = uploadImage();
-
-        $participant = Participant::find($_POST['id']);
         $participant->company = $company;
         $participant->position = $position;
         $participant->about = $about;
         $participant->filename = $filename;
 
         $participant->save();
+        $newParticipant = Participant::findBy('email', $email);
+        // $newParticipant ? $newParticipant->id : null;
+        echo  json_encode(['id' => $newParticipant->id]);
     }
 
-    public function issetParticipant()
+    public function issetParticipant($email)
     {
-        $email = $_POST['email'];
-        echo Participant::findBy('email', $email) ? true : false;
+        // $email = $_POST['email'];
+        return Participant::findBy('email', $email) ? true : false;
     }
-    
-   /*  function show($id){
-       $participant=Participant::find($id);
-       View::render('main', compact('participant'));
-        echo $id;
-    } */
+
+    function show($id)
+    {
+        $participant = Participant::find($id);
+        View::render('participant-show', compact('participant'));
+    }
 }

@@ -1,19 +1,17 @@
-if(localStorage.getItem('currentTab')){
-var  currentTab=Number(localStorage.getItem('currentTab'));
-}  
-else{var currentTab = 0;}
-
-
+let currentTab = 0; // Current tab is set to be the first tab (0)
 showTab(currentTab); // Display the current tab
+
+let regForm = document.getElementById('regForm');
 
 function showTab(n) {
   var x = document.getElementsByClassName("tab");
+  document.querySelectorAll('.tab').forEach(tab => tab.classList.add('hidden'));
 
-  x[n].style.display = "block";
+  x[n].classList.remove('hidden');
   if (n == 0) {
-    document.getElementById("prevBtn").style.display = "none";
+    document.getElementById("prevBtn").classList.add('hidden');
   } else {
-    document.getElementById("prevBtn").style.display = "inline";
+    document.getElementById("prevBtn").classList.remove('hidden');
   }
   if (n == (x.length - 1)) {
     document.getElementById("nextBtn").innerHTML = "Submit";
@@ -23,69 +21,71 @@ function showTab(n) {
   fixStepIndicator(n);
 }
 
-function nextPrev(btn, n) {
+async function nextPrev(btn, n) {
 
-  var x = document.getElementsByClassName("tab");
-
-  if (n == 1 && !validateForm()) return false;
-  x[currentTab].style.display = "none";
-
-/**Удалить сведения о номере формы и запистать номер формы +1 */
-  localStorage.removeItem('currentTab');
-  localStorage.setItem('currentTab',currentTab+Number(n));
-
-  currentTab = Number(localStorage.getItem('currentTab'));
-  console.log(`x.lenght=${x.length}` );
-   if (currentTab >= Number(x.length)-1) {
- 
-    localStorage.clear();
-    localStorage.setItem('currentTab',currentTab-1);
-    return false;
-  }
+  let x = document.getElementsByClassName("tab");
+  if (n == 1 && !await validateForm()) return false;
 
 
-  fetch(btn.closest('form').action, {
+
+
+  fetch(regForm.action, {
     method: 'POST',
-    body: new FormData(btn.closest('form'))
+    body: new FormData(regForm)
   })
-    .then(response => response.text())
+    .then(response => response.json())
     .then(data => {
-      if (data) {
-        document.getElementById('id').value = data;
-        document.getElementById('share_tw').href = document.getElementById('share_tw').href + data;
-        document.getElementById('share_fb').href = document.getElementById('share_fb').href + data;
 
+      if (!data.error) {
+        saveParticipant(+data.id, regForm);  // save to localStorage
+        x[currentTab].classList.add('hidden');
+        currentTab = currentTab + n;
+
+
+        if (currentTab >= x.length) {
+          return false;
+        }
+        showTab(currentTab);
+        localStorage.setItem('step', currentTab);
+        if (currentTab >= x.length - 1) {
+          removeParticipant()
+        }
       }
-      showTab(currentTab);
+      else {
+        alert(data.error);
+      }
     });
-    
 
 }
 
-function validateForm() {
-  emailAddress = document.getElementById('email');
-  var pattern = new RegExp(/^(("[\w-\s]+")|([\w-]+(?:\.[\w-]+)*)|("[\w-\s]+")([\w-]+(?:\.[\w-]+)*))(@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$)|(@\[?((25[0-5]\.|2[0-4][0-9]\.|1[0-9]{2}\.|[0-9]{1,2}\.))((25[0-5]|2[0-4][0-9]|1[0-9]{2}|[0-9]{1,2})\.){2}(25[0-5]|2[0-4][0-9]|1[0-9]{2}|[0-9]{1,2})\]?$)/i);
-  var check = pattern.test(emailAddress.value);
 
-  // This function deals with validation of the form fields
-  var x, y, i, valid = true;
 
-  x = document.getElementsByClassName("tab");
+async function validateForm() {
+  let valid = true;
+  if (currentTab == 0) {
+    let emailAddress = document.getElementById('email');
+    let pattern = new RegExp(/^(("[\w-\s]+")|([\w-]+(?:\.[\w-]+)*)|("[\w-\s]+")([\w-]+(?:\.[\w-]+)*))(@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$)|(@\[?((25[0-5]\.|2[0-4][0-9]\.|1[0-9]{2}\.|[0-9]{1,2}\.))((25[0-5]|2[0-4][0-9]|1[0-9]{2}|[0-9]{1,2})\.){2}(25[0-5]|2[0-4][0-9]|1[0-9]{2}|[0-9]{1,2})\]?$)/i);
 
-  y = x[currentTab].getElementsByClassName("required");
-
-  for (i = 0; i < y.length; i++) {
-    if (y[i].value == "") {
-      y[i].className += " invalid";
+    if (!pattern.test(emailAddress.value)) {
       valid = false;
+      emailAddress.classList.add('invalid');
     }
   }
+
+  document.querySelectorAll('.required').forEach(element => {
+    if (!element.value) {
+      element.classList.add('invalid');
+      valid = false;
+    }
+  });
+
+
+
   if (valid) {
-    document.getElementsByClassName("step")[currentTab].className += " finish";
+    document.querySelectorAll(".step")[currentTab].classList.add("finish");
   }
 
-
-  return valid; // return the valid status
+  return valid;
 }
 
 
@@ -102,17 +102,57 @@ function fixStepIndicator(n) {
 
 
 
-let emailParticipant = document.getElementById('email');
 
-emailParticipant.addEventListener('blur', (e) => {
-  const formData = new FormData();
-  formData.append('email', emailParticipant.value);
-  fetch('/isset-participant', {
-    method: 'POST',
-    body: formData
-  })
-    .then(response => response.text())
-    .then(data => {
-      // alert(data)
-    });
-})
+
+
+
+function removeClassError(e) {
+  e.target.classList.remove('invalid');
+}
+const requiredElements = document.querySelectorAll('.required');
+requiredElements.forEach(element => element.addEventListener('input', removeClassError));
+
+
+
+
+
+function saveParticipant(data, form) {
+  document.getElementById('id').value = data;
+  let share_tw_href = document.getElementById('share_tw').href;
+  let share_fb_href = document.getElementById('share_fb').href;
+
+  document.getElementById('share_tw').href = share_tw_href.slice(0, share_tw_href.lastIndexOf('/') + 1) + data;
+  document.getElementById('share_fb').href = share_fb_href.slice(0, share_fb_href.lastIndexOf('%2F') + 3) + data;
+
+  let user_data = Object.fromEntries(new FormData(form));
+  user_data.id = data;
+  localStorage.setItem('user_data', JSON.stringify(user_data));
+
+}
+
+
+
+function removeParticipant() {
+  localStorage.removeItem('step');
+  localStorage.removeItem('user_data');
+}
+
+function loadParticipant() {
+  let user_data = JSON.parse(localStorage.getItem('user_data')); // isset   null
+  if (user_data) {
+    document.getElementById('id').value = user_data.id;
+    document.getElementById('share_tw').href = document.getElementById('share_tw').href + user_data.id;
+    document.getElementById('share_fb').href = document.getElementById('share_fb').href + user_data.id;
+    currentTab = Number(localStorage.getItem('step') ?? 0);
+    showTab(currentTab);
+    delete user_data.filename;
+    for (const key in user_data) {
+      if (Object.hasOwnProperty.call(user_data, key)) {
+        const element = user_data[key];
+        document.querySelector(`[name="${key}"]`).value = element;
+      }
+    }
+  }
+}
+
+loadParticipant();
