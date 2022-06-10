@@ -5,7 +5,7 @@ namespace App\Controllers;
 
 
 require_once 'App/Helpers/uploadImage.php';
-/* require_once 'App/Helpers/validateMail.php'; */
+
 
 
 use App\Helpers\View;

@@ -11,7 +11,7 @@
 
 
 
-    <form class="bg-dark text-success mt-3 p-5 rounded-5" id="regForm" action="/store-participant" method="POST" enctype="multipart/form-data">
+    <form class="bg-dark text-success mt-3 p-5 rounded-5" id="regForm" action="store-participant" method="POST" enctype="multipart/form-data">
         <!--step one-->
         <div class="tab">
             <div class="mb-3">

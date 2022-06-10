@@ -25,7 +25,7 @@ class Router
 
         if ($isRouteFound) {   //  
             list($nameMethod, $nameController) = $controllerAndMethod;
-            if (file_exists('App/controllers/' . $nameController . '.php')) {
+            if (file_exists('App/Controllers/' . $nameController . '.php')) {
                 $pathController = 'App\\Controllers\\' . $nameController;
                 $controller = new $pathController();
                 if (method_exists($controller, $nameMethod)) {
