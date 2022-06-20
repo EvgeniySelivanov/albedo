@@ -67,18 +67,6 @@ abstract class Model
         self::$db->query($sql, $parameters);
     }
 
-    public function deleteCategory()
-    {
-
-        if ($this->id)
-            $id = $_POST['id'];
-
-        $sql = 'DELETE FROM `' . static::getTable() . '` WHERE id=' . $id . '';
-
-        self::$db = new Db();
-        self::$db->query($sql);
-    }
-
 
     protected function getProperties()
     {
