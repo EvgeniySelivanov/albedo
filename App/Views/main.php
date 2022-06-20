@@ -40,7 +40,7 @@
             <div class="mb-3">
                 <label for="phone" class="form-label">Enter your phone number:</label>
                 <input type="tel" class="form-control required" id="phone" name="phone" pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}">
-                <small>Format: 123-456-7890</small>
+                <small>Format:+38 066 12 45 890</small>
             </div>
             <div class="mb-3">
                 <label for="reportSubject" class="form-label">Report subject</label>

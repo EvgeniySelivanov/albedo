@@ -15,7 +15,7 @@ function uploadImage()
         echo json_encode(['error' => 'Check type!']);
         die();
     }
-    if ($size > 50 * 1024 * 1024) {     //ограничили размер в 50 мегабайт
+    if ($size > 50 * 1024 * 1024) {     //ограничил размер в 50 мегабайт
         echo json_encode(['error' => 'Check size']);
         die();
     }

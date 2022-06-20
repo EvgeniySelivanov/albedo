@@ -33,7 +33,7 @@ async function nextPrev(btn, n) {
     method: 'POST',
     body: new FormData(regForm)
   })
-    .then(response => response.json())
+    .then(response => response.json()) 
     .then(data => {
 
       if (!data.error) {
@@ -51,6 +51,7 @@ async function nextPrev(btn, n) {
           removeParticipant()
         }
       }
+      /**Вывод ошибок после проверки на стороне сервера */
       else {
         alert(data.error);
       }
@@ -58,23 +59,46 @@ async function nextPrev(btn, n) {
 
 }
 
-
-
 async function validateForm() {
   let valid = true;
   if (currentTab == 0) {
     let emailAddress = document.getElementById('email');
+    let firstName = document.getElementById('firstName');
+    let lastName = document.getElementById('lastName');
+    let phone=document.getElementById('phone');
+    let patternName = new RegExp(/^[a-zA-Z\-]+$/);
+    let patternPhone=new RegExp(/\+\d{2}(?<code>\d{3})\s?\d{3}(?:[- ]?\d{2}){2}/g);
     let pattern = new RegExp(/^(("[\w-\s]+")|([\w-]+(?:\.[\w-]+)*)|("[\w-\s]+")([\w-]+(?:\.[\w-]+)*))(@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$)|(@\[?((25[0-5]\.|2[0-4][0-9]\.|1[0-9]{2}\.|[0-9]{1,2}\.))((25[0-5]|2[0-4][0-9]|1[0-9]{2}|[0-9]{1,2})\.){2}(25[0-5]|2[0-4][0-9]|1[0-9]{2}|[0-9]{1,2})\]?$)/i);
 
     if (!pattern.test(emailAddress.value)) {
       valid = false;
       emailAddress.classList.add('invalid');
+      alert('Mail invalid');
+    }
+    if (!patternName.test(firstName.value)) {
+      valid = false;
+      firstName.classList.add('invalid');
+      
+      alert('First name invalid');
+    }
+    if (!patternName.test(lastName.value)) {
+      valid = false;
+      lastName.classList.add('invalid');
+      
+      alert('Last name invalid');
+    }
+    if (!patternPhone.test(phone.value)) {
+      valid = false;
+      phone.classList.add('invalid');
+      
+      alert('Phone invalid');
     }
   }
 
   document.querySelectorAll('.required').forEach(element => {
     if (!element.value) {
       element.classList.add('invalid');
+      
       valid = false;
     }
   });
@@ -89,7 +113,6 @@ async function validateForm() {
 }
 
 
-
 function fixStepIndicator(n) {
   // This function removes the "active" class of all steps...
   var i, x = document.getElementsByClassName("step");
@@ -101,19 +124,11 @@ function fixStepIndicator(n) {
 }
 
 
-
-
-
-
-
 function removeClassError(e) {
   e.target.classList.remove('invalid');
 }
 const requiredElements = document.querySelectorAll('.required');
 requiredElements.forEach(element => element.addEventListener('input', removeClassError));
-
-
-
 
 
 function saveParticipant(data, form) {
@@ -129,8 +144,6 @@ function saveParticipant(data, form) {
   localStorage.setItem('user_data', JSON.stringify(user_data));
 
 }
-
-
 
 function removeParticipant() {
   localStorage.removeItem('step');
