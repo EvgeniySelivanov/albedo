@@ -5,3 +5,9 @@ RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d  
 
 RewriteRule (.*) index.php?url=$1 [QSA,L] 
+
+php_value session.gc_maxlifetime 10800
+php_value max_input_time         10800
+php_value max_execution_time     10800
+php_value upload_max_filesize    110M
+php_value post_max_size          120M

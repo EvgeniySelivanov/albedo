@@ -24,6 +24,9 @@ class ParticipantController extends Controller
 
     public function store()
     {
+        
+        
+
         $fname = $_POST['fname'];
         $lname = $_POST['lname'];
         $birhtday = $_POST['birhtday'];
@@ -34,7 +37,12 @@ class ParticipantController extends Controller
         $company = $_POST['company'] ?? null;
         $position = $_POST['position'] ?? null;
         $about = $_POST['about'] ?? null;
-        $filename = $_FILES['filename']['error'] != 4 ? uploadImage() : null;
+       /* $filename = $_FILES['filename']['error'] != 4 ? uploadImage() : null; */
+       if($_FILES['filename']['error'] != 4){
+        $filename=uploadImage();}
+       else{
+            $filename=null;            
+        }
 
         $id = $_POST['id'];
 
@@ -52,16 +60,19 @@ class ParticipantController extends Controller
         $participant->reportSubject = $reportSubject;
         $participant->email = $email;
 
+        
 
         $participant->company = $company;
         $participant->position = $position;
         $participant->about = $about;
         $participant->filename = $filename;
-
+       
         $participant->save();
         $newParticipant = Participant::findBy('email', $email);
         // $newParticipant ? $newParticipant->id : null;
         echo  json_encode(['id' => $newParticipant->id]);
+
+        
     }
 
     public function issetParticipant($email)

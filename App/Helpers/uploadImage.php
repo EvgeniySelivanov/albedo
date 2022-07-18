@@ -5,18 +5,19 @@ function uploadImage()
     $file = $_FILES['filename'];
     extract($file); //реструктуризация массива (разбили на переменные)
     if ($error == 4) {
+        echo json_encode(['error' => 'The file was not loaded']);
         return null;
     }
 
 
-    $path = '/';
-    $accessType = ['image/jpeg', 'image/png', 'image/gif', 'image/webp'];
+    /* $path = '/'; */
+    $accessType = ['image/jpeg', 'image/png', 'image/gif', 'image/webp','image/tiff'];
     if (!in_array($type, $accessType)) {         //проверяет совпадет ли тип картинки со значениями в массиве $accessType
-        echo json_encode(['error' => 'Check type!']);
+        echo json_encode(['error' => 'Check file type!']);
         die();
     }
     if ($size > 50 * 1024 * 1024) {     //ограничил размер в 50 мегабайт
-        echo json_encode(['error' => 'Check size']);
+        echo json_encode(['error' => 'Check size image!']);
         die();
     }
 

@@ -21,7 +21,7 @@ function showTab(n) {
   fixStepIndicator(n);
 }
 
-async function nextPrev(btn, n) {
+async function nextPrev(btn,n) {
 
   let x = document.getElementsByClassName("tab");
   if (n == 1 && !await validateForm()) return false;

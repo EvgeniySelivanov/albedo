@@ -15,13 +15,4 @@ class MainController
         View::render('main', compact('countries'));
     }
 
-
-    public function dateBirthday(){
-        $date=['hello'];
-      
-         View::render('main',compact('date'));
-         
-    }
-
-
 }
